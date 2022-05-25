@@ -1,0 +1,46 @@
+@import "../styles/theme.less";
+
+.ant-layout-header,
+.ant-menu {
+	background: #colors[green];
+}
+
+.ant-menu-horizontal {
+	border-bottom: 1px solid #colors[green];
+}
+
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item:hover,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu:hover,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-active,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-active,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-open,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-open,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-item-selected,
+.ant-menu-horizontal:not(.ant-menu-dark) > .ant-menu-submenu-selected {
+	color: #ffffff;
+	border-bottom: 2px solid #ffffff;
+}
+
+.ant-menu-horizontal > .ant-menu-item,
+.ant-menu-horizontal > .ant-menu-submenu,
+a.ant-dropdown-trigger.ant-dropdown-link,
+.ant-menu-horizontal > .ant-menu-item a:hover {
+	color: white;
+}
+
+.ant-menu-horizontal {
+	display: flex;
+	justify-content: space-between;
+}
+
+.ant-layout-header {
+	height: auto;
+}
+
+.logo {
+	pointer-events: cursor;
+}
+
+.ant-menu-submenu-popup > .ant-menu {
+	background-color: #30994b !important;
+}
