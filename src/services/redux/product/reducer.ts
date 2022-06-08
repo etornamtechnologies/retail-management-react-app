@@ -59,6 +59,15 @@ export const getProductSuccess = (state: IProductState = INITIAL_STATE, action: 
   }
 }
 
+export const getProductFailure = (state: IProductState = INITIAL_STATE, action: {error: any}) => {
+  return {
+    ...state,
+    isLoading: false,
+    error: action.error,
+    product: null
+  }
+}
+
 export const createProduct = (state: IProductState = INITIAL_STATE, action: {payload: IProduct}) => {
   return {
     ...state,
@@ -159,17 +168,23 @@ export const HANDLERS = {
   [Types.GET_PRODUCTS]: getProducts,
   [Types.GET_PRODUCTS_SUCCESS]: getProductsSuccess,
   [Types.GET_PRODUCTS_FAILURE]: getProductsFailure,
+
   [Types.GET_PRODUCT]: getProduct,
   [Types.GET_PRODUCT_SUCCESS]: getProductSuccess,
+  [Types.GET_PRODUCT_FAILURE]: getProductFailure,
+
   [Types.CREATE_PRODUCT]: createProduct,
   [Types.CREATE_PRODUCT_SUCCESS]: createProductSuccess,
   [Types.CREATE_PRODUCT_FAILURE]: createProductFailure,
+
   [Types.UPDATE_PRODUCT]: updateProduct,
   [Types.UPDATE_PRODUCT_SUCCESS]: updateProductSuccess,
   [Types.UPDATE_PRODUCT_FAILURE]: updateProductFailure,
+
   [Types.DELETE_PRODUCT]: deleteProduct,
   [Types.DELETE_PRODUCT_SUCCESS]: deleteProductSuccess,
   [Types.DELETE_PRODUCT_FAILURE]: deleteProductFailure,
+  
   [Types.RESET_PRODUCTS]: resetProducts
 }
 

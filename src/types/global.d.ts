@@ -16,10 +16,11 @@ declare global {
   }
 
   interface IProductCategory extends AuditInterface {
-    id: number | string
+    id?: number | string
     name: string
     description: string
-    products?: Product[]
+    product?: Product[]
+    products_count?: number
   }
 
   interface IProduct extends AuditInterface {
@@ -67,8 +68,8 @@ declare global {
   }
 
   interface AuditInterface {
-    createdAt: Date
-    updatedAt: Date
+    createdAt?: Date
+    updatedAt?: Date
   }
 
   interface ISaleOrderItem {

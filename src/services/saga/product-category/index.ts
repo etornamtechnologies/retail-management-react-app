@@ -6,8 +6,6 @@ import {
   updateProductCategory as updateProductCategoryApi,
   deleteProductCategory as deleteProductCategoryApi
 } from '../../api/product-category'
-import { message } from 'antd';
-import { AxiosError } from 'axios';
 import { getErrorFromHttpResponse } from '../../../utils/common-helper';
 
 export function* getProductCategories(action: ReduxAction) {

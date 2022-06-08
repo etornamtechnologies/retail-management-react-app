@@ -84,13 +84,17 @@ export default class HttpRequest {
         window.localStorage.removeItem('access_token')
         window.localStorage.removeItem('token_type')
         window.localStorage.removeItem('token_expires_in')
+        message.error(getErrorFromHttpResponse(error));
         history.push('/sign-in')
       } else if(errorStatus === 403) {
-        
-      } else {
-        
+        message.error('User Not Authorized')
+        history.push('/forbidden')
+      } else if(errorStatus === 404) {
+        message.error('Not Found');
+      } {
+        message.error(getErrorFromHttpResponse(error));
       }
-      message.error(getErrorFromHttpResponse(error));
+      
       return Promise.reject(error)
     }
   }

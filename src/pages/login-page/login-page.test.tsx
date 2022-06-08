@@ -31,6 +31,7 @@ describe('Login Page', () => {
     await expect(mockLogin).toHaveBeenCalled();
     await expect(mockLogin).toHaveBeenCalledTimes(1);
     await expect(mockLogin).toHaveBeenCalledWith({username, password});
+    
   })
 
 })

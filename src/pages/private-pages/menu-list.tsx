@@ -28,7 +28,7 @@ export const items: MenuProps['items'] = [
   getItem('Inventory', 'inventory', <AppstoreOutlined/>, [
     getItem(<NavLink to='/inventory/products'>Products</NavLink>, 'inventory/products', <ShopOutlined/>),
     getItem(<NavLink to='/inventory/product-categories'>Categories</NavLink>, 'inventory/product-categories', <GroupOutlined/>),
-    getItem(<NavLink to='/inventory/uom'>Unit of Measurement</NavLink>, 'inventory/unit_of_measurement', <FunnelPlotOutlined/>)
+    getItem(<NavLink to='/inventory/skus'>Unit of Measurement</NavLink>, 'inventory/skus', <FunnelPlotOutlined/>)
   ]),
   getItem('Reports', 'reports', <PieChartOutlined/>, [
     getItem(<NavLink to='/reports/sales'>Sales Report</NavLink>, '/reports/sales', <ShoppingOutlined/>),

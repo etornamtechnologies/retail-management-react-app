@@ -1,11 +1,20 @@
-import { Breadcrumb, Col, Row, Spin, Table } from 'antd';
-import React, { FC } from 'react';
+import { PlusOutlined } from '@ant-design/icons';
+import { Breadcrumb, Button, Card, Col, Input, Row, Spin, Table } from 'antd';
+import React, { FC, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Creators as ProductCreators } from '../../services/redux/product/actions'
+import { useAppDispatch, useAppSelector } from '../../store';
 
 type Props = {
 
 }
 
-const columns = [
+type ColumnProps = {
+  onView: (product: IProduct) => void,
+  onEdit: (product: IProduct) => void,
+}
+
+const columns = (props: ColumnProps) => [
   {
     title: 'Name',
     dataIndex: 'name',
@@ -34,27 +43,64 @@ const columns = [
 ]
 
 const ProductList: FC<Props> = (props: Props) => {
-  const isLoading = false;
+  //local states
+  const [filter, setFilter] = useState()
+
+  //redux state
+  const dispatch = useAppDispatch()
+  const productState: IProductState = useAppSelector(state => state.product)
+  const { isLoading, products } = productState
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    dispatch(ProductCreators.getProducts({
+      filter
+    }))
+  }, [])
+
   return (
     <>
       <Row>
-        <Col span={24}>
+        <Col span={6}>
           <Breadcrumb>
             <Breadcrumb.Item>
               Products
             </Breadcrumb.Item>
           </Breadcrumb>
         </Col>
-      </Row>
-      <Row>
-        <Col span={24}>
-          {isLoading ? <Spin/> : (
-            <Table 
-
-            />
-          )}
+        <Col span={18} style={{textAlign: 'right'}}>
+          <Button type='default' onClick={() => navigate('/inventory/products/add')}>
+            <PlusOutlined/>
+            Add New Product
+          </Button>
         </Col>
       </Row>
+      <Card style={{marginTop: 10}}>
+        <Row style={{marginBottom: 10}}>
+          <Col span={24}>
+            <Input type='search' className='search-bar' />
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Table 
+              columns={columns({
+                onView: (row: IProduct) => {
+
+                },
+                onEdit: (row: IProduct) => {
+
+                }
+              })}
+              dataSource={products}
+              loading={isLoading}
+              size='small'
+              bordered
+            />
+          </Col>
+        </Row>
+      </Card>
     </>
   )
 }

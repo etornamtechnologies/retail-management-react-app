@@ -56,8 +56,7 @@ const HomePage: React.FC = () => {
             <Input 
               type='search' 
               placeholder='Search' 
-              style={{width: '100%', padding: 6, height: 50, borderRadius: 5}} 
-            
+              className='search-bar'
             />
           </Col>
         </Row>

@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { createBrowserHistory } from 'history'
+import moment from 'moment';
 
 
 //export const history = createHashHistory()
@@ -25,4 +26,8 @@ export function getErrorFromHttpResponse(error: AxiosError): string {
   } else {
     return errorData?.message
   }
+}
+
+export function prettifyDate(dateTime: string): string {
+  return moment(dateTime).format('DD MM YYYY HH:mm')
 }

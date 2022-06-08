@@ -86,6 +86,7 @@ export const createProductCategorySuccess = (state: IProductCategoryState = INIT
     ...state,
     isLoading: false,
     error: '',
+    isSuccess: true,
     productCategories: state.productCategories.concat([action.data])
   }
 }
@@ -148,18 +149,21 @@ export const deleteProductCategory = (state: IProductCategoryState = INITIAL_STA
     isLoading: true,
     error: '',
     isSuccess: false,
-    isSubmitting: false,
+    isSubmitting: true,
   }
 }
 
 export const deleteProductCategorySuccess = (state: IProductCategoryState = INITIAL_STATE, action: {id: number | string}) => {
   const {id} = action;
+  console.log('id', id)
   const productCategories = state.productCategories.filter(item => item.id !== id)
   return {
     ...state,
     isLoading: false,
     error: '',
-    productCategories
+    productCategories,
+    isSubmitting: false,
+    isSuccess: true
   }
 }
 
@@ -185,6 +189,9 @@ export const HANDLERS = {
   [Types.CREATE_PRODUCT_CATEGORY]: createProductCategory,
   [Types.CREATE_PRODUCT_CATEGORY_SUCCESS]: createProductCategorySuccess,
   [Types.CREATE_PRODUCT_CATEGORY_FAILURE]: createProductCategoryFailure,
+  [Types.DELETE_PRODUCT_CATEGORY]: deleteProductCategory,
+  [Types.DELETE_PRODUCT_CATEGORY_SUCCESS]: deleteProductCategorySuccess,
+  [Types.DELETE_PRODUCT_CATEGORY_FAILURE]: deleteProductCategoryFailure,
 }
 
 export default createReducer(INITIAL_STATE, HANDLERS);

@@ -8,7 +8,6 @@ import {
   updateUserStatus as updateUserStatusApi
 } from '../../api/user'
 import { message } from 'antd';
-import { AxiosError } from 'axios';
 import { getErrorFromHttpResponse } from '../../../utils/common-helper';
 
 
@@ -23,8 +22,7 @@ export function* getUsers(action: ReduxAction) {
       yield put(Creators.getUsersSuccess(responseData))
     }
   } catch (error: any) {
-    const errMsg = error?.response?.data?.message || 'Failure';
-    yield put(Creators.getUsersFailure(errMsg))
+    yield put(Creators.getUsersFailure(getErrorFromHttpResponse(error)))
   }
 }
 

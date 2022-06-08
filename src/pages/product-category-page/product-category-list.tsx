@@ -4,6 +4,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store';
 import { Creators as ProductCategoryCreators } from '../../services/redux/product-category/actions'
 import ProductCategoryForm from './product-category-form';
+import { prettifyDate } from '../../utils/common-helper';
 
 type Props = {
 
@@ -16,14 +17,21 @@ const columns = (props: {onEdit: (row: IProductCategory)=> void, onDelete: (row:
     key: 'name'
   },
   {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description'
+  },
+  {
     title: 'Created On',
     dataIndex: 'created_at',
-    key: 'created_at'
+    key: 'created_at',
+    render: (text: string) => prettifyDate(text)
   },
   {
     title: 'Number of Products',
-    dataIndex: 'product_count',
-    key: 'product_count'
+    dataIndex: 'products_count',
+    key: 'products_count',
+    render: (text: number) => text ? text : 0
   },
   {
     title: 'Actions',
@@ -38,10 +46,12 @@ const columns = (props: {onEdit: (row: IProductCategory)=> void, onDelete: (row:
 
 const ProductCategoryList: FC<Props> = (props: Props) => {
   const [addForm] = Form.useForm()
+  const [editForm] = Form.useForm()
   //local states
   const [addModal, setAddModal] = useState(false)
-  const [editModal, setEditModal] = useState(false)
-  const [deleteModal, setDeleteModal] = useState(false)
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState<IProductCategory | null>(null);
 
   //global states
   const dispatch = useAppDispatch()
@@ -54,8 +64,15 @@ const ProductCategoryList: FC<Props> = (props: Props) => {
   }, [])
 
   useEffect(() => {
+    console.log('isSubmitting', isSubmitting)
+    console.log('isSuccess', isSuccess)
     if(!isSubmitting && isSuccess) {
-      addForm.resetFields()
+      console.log('lets hide form')
+      //addForm.setFieldsValue({name: '', description: ''})
+      setSelectedCategory(null)
+      setAddModal(false)
+      setDeleteModalVisible(false)
+      setEditModalVisible(false)
     }
   }, [isSubmitting, isSuccess])
 
@@ -83,10 +100,13 @@ const ProductCategoryList: FC<Props> = (props: Props) => {
           <Table 
             columns={columns({
               onEdit: (row: IProductCategory) => {
-                
+                setSelectedCategory(row)
+                editForm.setFieldsValue({name: row?.name, description: row?.description})
+                setEditModalVisible(true)
               },
               onDelete: (row: IProductCategory) => {
-
+                setSelectedCategory(row)
+                setDeleteModalVisible(true)
               }
             })}
             dataSource={productCategories}
@@ -105,16 +125,61 @@ const ProductCategoryList: FC<Props> = (props: Props) => {
         }}
       >
         <ProductCategoryForm
-          initialValues={{name: ''}}
+          initialValues={{name: '', description: ''}}
           onFinish={(values) => {
-            const payload = {
-              name: values.name
+            const payload: IProductCategory = {
+              name: values.name,
+              description: values.description
             }
             dispatch(ProductCategoryCreators.createProductCategory(payload))
           }}
           submitBtnText='Add New Product Category'
           form={addForm}
+          loading={isSubmitting}
         />
+      </Modal>
+      <Modal
+        visible={editModalVisible}
+        footer={false}
+        onCancel={() => {
+          setEditModalVisible(false)
+          setSelectedCategory(null)
+        }}
+      >
+        <ProductCategoryForm
+          initialValues={{name: selectedCategory?.name as string, description: selectedCategory?.description as string}}
+          onFinish={(values) => {
+            const payload: IProductCategory = {
+              name: values.name,
+              description: values.description
+            }
+            dispatch(ProductCategoryCreators.updateProductCategory(selectedCategory?.id as number, payload))
+          }}
+          submitBtnText='Update Product Category'
+          form={editForm}
+          loading={isSubmitting}
+        />
+      </Modal>
+      <Modal
+        visible={deleteModalVisible}
+        onCancel={() => {
+          setDeleteModalVisible(false)
+          setSelectedCategory(null)
+        }}
+        onOk={() => {
+          dispatch(ProductCategoryCreators.deleteProductCategory(selectedCategory?.id as number))
+        }}
+        confirmLoading={isSubmitting}
+        title='Delete Product Category'
+        okText='Yes delete'
+        cancelText='No'
+        okType='danger'
+      >
+        <Row>
+          <Col span={24}>
+            <span>{`Are you sure you want to delete ${selectedCategory?.name}?`}</span>
+          </Col>
+        </Row>
       </Modal>
     </>
   )

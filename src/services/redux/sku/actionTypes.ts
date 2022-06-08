@@ -20,4 +20,6 @@ export default createTypes(`
   DELETE_SKU
   DELETE_SKU_SUCCESS
   DELETE_SKU_FAILURE
+
+  RESET_SKUS
 `)
